@@ -1,8 +1,8 @@
 import { Stack, useRouter } from "expo-router";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Nearbyjobs, Popularjobs, Welcome } from "../components";
-import ScreenHeaderBtn from '../components/common/header/ScreenHeaderBtn';
+import ScreenHeaderBtn from "../components/common/header/ScreenHeaderBtn";
 import { COLORS, icons, SIZES } from "../constants";
 
 export default function Index() {
@@ -21,12 +21,24 @@ export default function Index() {
         options={{
           headerShown: false,
           headerStyle: { backgroundColor: COLORS.lightWhite },
-          headerLeft: ()=>(<ScreenHeaderBtn iconUrl = {icons.menu} dimension = "60%" handlePress={() => router.push('/menu')}/>) ,
-          headerRight: ()=>(<ScreenHeaderBtn iconUrl = {icons.profile} dimension = "100%" handlePress={() => router.push('/profile')}/>),
+          headerLeft: () => (
+            <ScreenHeaderBtn
+              iconUrl={icons.menu}
+              dimension="60%"
+              handlePress={() => router.push("/menu")}
+            />
+          ),
+          headerRight: () => (
+            <ScreenHeaderBtn
+              iconUrl={icons.profile}
+              dimension="100%"
+              handlePress={() => router.push("/profile")}
+            />
+          ),
           headerTitle: "",
         }}
       />
-      <View>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             flex: 1,
@@ -37,7 +49,7 @@ export default function Index() {
           <Popularjobs />
           <Nearbyjobs />
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

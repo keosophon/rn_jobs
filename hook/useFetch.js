@@ -1,43 +1,48 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const useFetch= (endpoint) => {
+const useFetch = (endpoint, query) => {
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  const axios = require("axios");
 
-    const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+  const options = {
+    method: "GET",
+    url: `https://jsearch.p.rapidapi.com/${endpoint}`,
+    headers: {
+      "x-rapidapi-key": "524653a95fmsh541671e33ba191ap19a87ejsn17664806add2",
+      "x-rapidapi-host": "jsearch.p.rapidapi.com",
+    },
+    params: {
+      ...query,
+    },
+  };
 
-    const axios = require('axios');
+  async function fetchData() {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await axios.request(options);
+      setData(response.data.data);
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      alert("There is an error fetching data");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-const options = {
-  method: 'GET',
-  url: `https://jsearch.p.rapidapi.com/${endpoint}`,
-  headers: {
-    'x-rapidapi-key': process.env.RAPID_JSEARCH_API_KEY,
-    'x-rapidapi-host': 'jsearch.p.rapidapi.com'
-  },
-  params: {
-    query: 'developer jobs in chicago',
-    page: '1',
-    num_pages: '1',
-    country: 'us',
-    date_posted: 'all'
-  },
-  
+  const refetch = () => {
+    setIsLoading(true);
+    fetchData();
+  };
+
+  return { data, isLoading, error, refetch };
 };
-
-async function fetchData() {
-	try {
-		const response = await axios.request(options);
-		console.log(response.data);
-	} catch (error) {
-		console.error(error);
-	}
-}
-
-fetchData();
-
-    return { isLoading: false, data: [], error: false };
-}
 
 export default useFetch;

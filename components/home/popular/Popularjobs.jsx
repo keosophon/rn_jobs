@@ -1,11 +1,15 @@
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { SIZES } from '../../../constants';
+import useFetch from '../../../hook/useFetch';
 import PopularJobCard from '../../common/cards/popular/PopularJobCard';
 import styles from './popularjobs.style';
 
 const Popularjobs = () => {
-  const isLoading = false;
-  const error = false;
+  const { data, isLoading, error } = useFetch('search', {
+    query: 'React developer',
+    num_pages: '1'
+  });
+  console.log(data);
   
   return (
     <View style={styles.container} >
