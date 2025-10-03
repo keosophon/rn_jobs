@@ -1,5 +1,5 @@
 import { Stack, useRouter } from "expo-router";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Nearbyjobs, Popularjobs, Welcome } from "../components";
 import ScreenHeaderBtn from '../components/common/header/ScreenHeaderBtn';
@@ -26,7 +26,7 @@ export default function Index() {
           headerTitle: "",
         }}
       />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <View>
         <View
           style={{
             flex: 1,
@@ -37,7 +37,7 @@ export default function Index() {
           <Popularjobs />
           <Nearbyjobs />
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }

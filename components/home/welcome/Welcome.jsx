@@ -1,8 +1,20 @@
-import { Text, View } from 'react-native'
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import {
+  FlatList,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { icons, SIZES } from "../../../constants";
+import styles from "./welcome.style";
 
-import styles from './welcome.style'
-
+const jobTypes = ["Full-time", "Part-time", "Contractor"];
 const Welcome = () => {
+  const router = useRouter();
+  const [activeJobType, setActiveJobType] = useState(jobTypes[0]);
   return (
     <View>
       <View style={styles.container}>
@@ -11,20 +23,42 @@ const Welcome = () => {
       </View>
       <View style={styles.searchContainer}>
         <View style={styles.searchWrapper}>
-          <Text style={styles.searchInput}>What are you looking for?</Text>
-        </View>
-        <View style={styles.searchBtn}>
-          <Text style={styles.searchBtnText}>Search</Text>
+          <TextInput
+            style={styles.searchInput}
+            value=""
+            onChange={() => {}}
+            placeholder="What are you looking for"
+          />
         </View>
       </View>
+      <TouchableOpacity style={styles.searchBtn} onPress={() => {}}>
+        <Image
+          source={icons.search}
+          resizeMode="contain"
+          style={styles.searchBtnImage}
+        />
+      </TouchableOpacity>
       <View style={styles.tabsContainer}>
-        <Text style={styles.tab}>Full-time</Text>
-        <Text style={styles.tab}>Part-time</Text>
-        <Text style={styles.tab}>Contractor</Text>
+        <FlatList
+          data={jobTypes}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.tab(activeJobType, item)}
+              onPress={() => {
+                setActiveJobType(item);
+                router.push(`/search/${item}`);
+              }}
+            >
+              <Text style={styles.tabText(activeJobType, item)}>{item}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item}
+          contentContainerStyle={{ columnGap: SIZES.small }}
+          horizontal  
+        />
       </View>
-     
     </View>
-  )
-}
+  );
+};
 
-export default Welcome
+export default Welcome;
