@@ -1,7 +1,17 @@
 import { Stack, useRouter, useSearchParams } from "expo-router";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
-import { COLORS, icons } from "../../constants";
+import Company from "../../components/jobdetails/company/Company";
+import Tabs from "../../components/jobdetails/tabs/Tabs";
+import { COLORS, icons, SIZES } from "../../constants";
 import useFetch from "../../hook/useFetch";
 
 const JobDetails = () => {
@@ -10,6 +20,9 @@ const JobDetails = () => {
   const { data, isLoading, error, refetch } = useFetch("job-details", {
     job_id: params.id,
   });
+
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = () => {};
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
@@ -31,6 +44,28 @@ const JobDetails = () => {
           ),
         }}
       />
+
+      <>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {isLoading ? (
+            <ActivityIndicator size="large" color={COLORS.primary} />
+          ) : error ? (
+            <Text>Something went wrong</Text>
+          ) : data.length === 0 ? (
+            <Text>No data</Text>
+          ) : (
+            <View style={{ padding: SIZES.medium, paddingBottom: 100 }}>
+              <Company />
+              <Tabs />
+            </View>
+          )}
+        </ScrollView>
+      </>
     </SafeAreaView>
   );
 };
