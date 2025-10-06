@@ -14,15 +14,43 @@ import Tabs from "../../components/jobdetails/tabs/Tabs";
 import { COLORS, icons, SIZES } from "../../constants";
 import useFetch from "../../hook/useFetch";
 
+const tabs = ["About", "Qualifications", "Responsibilities"];
+
 const JobDetails = () => {
   const params = useSearchParams();
   const router = useRouter();
   const { data, isLoading, error, refetch } = useFetch("job-details", {
     job_id: params.id,
   });
-
+  const [activeTab, setActiveTab] = useState(tabs[0]);
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {};
+  const displayTabContent = (tab, jobDetails) => {
+    switch (tab) {
+      case "Qualifications":
+        return (
+          
+        );
+      case "About":
+        return (
+          
+        );
+      case "Responsibilities":
+        return (
+          
+        );
+      default:
+        return null;
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
@@ -60,8 +88,18 @@ const JobDetails = () => {
             <Text>No data</Text>
           ) : (
             <View style={{ padding: SIZES.medium, paddingBottom: 100 }}>
-              <Company />
-              <Tabs />
+              <Company
+                companyLogo={data[0].employer_logo}
+                jobTitle={data[0].job_title}
+                companyName={data[0].employer_name}
+                location={data[0].job_country}
+              />
+              <Tabs
+                tabs={tabs}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+              />
+              {displayTabContent(activeTab, data[0])}
             </View>
           )}
         </ScrollView>
