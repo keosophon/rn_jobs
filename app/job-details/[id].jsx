@@ -9,7 +9,11 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
+import JobAbout from "../../components/jobdetails/about/About";
 import Company from "../../components/jobdetails/company/Company";
+import { Specifics } from "../../components/jobdetails/specifics/Specifics";
+
+import JobFooter from "../../components/jobdetails/footer/Footer";
 import Tabs from "../../components/jobdetails/tabs/Tabs";
 import { COLORS, icons, SIZES } from "../../constants";
 import useFetch from "../../hook/useFetch";
@@ -25,19 +29,25 @@ const JobDetails = () => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {};
-  const displayTabContent = (tab, jobDetails) => {
-    switch (tab) {
+  const displayTabContent = (activeTab, jobDetails) => {
+    switch (activeTab) {
       case "Qualifications":
         return (
-          
+          <Specifics
+            title="Qualifications"
+            points={jobDetails.job_highlights?.Qualifications ?? ["N/A"]}
+          />
         );
       case "About":
         return (
-          
+          <JobAbout info={jobDetails.job_description ?? "No data provided"} />
         );
       case "Responsibilities":
         return (
-          
+          <Specifics
+            title="Responsibilities"
+            points={jobDetails.job_highlights?.Responsibilities ?? ["N/A"]}
+          />
         );
       default:
         return null;
@@ -103,6 +113,12 @@ const JobDetails = () => {
             </View>
           )}
         </ScrollView>
+        <JobFooter
+          url={
+            data[0]?.job_google_link ??
+            "https://careers.google.com/jobs/results"
+          }
+        />
       </>
     </SafeAreaView>
   );
