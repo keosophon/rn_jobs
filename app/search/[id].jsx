@@ -5,7 +5,7 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
-  SafeAreaView,
+  
   Text,
   TouchableOpacity,
   View,
@@ -14,6 +14,7 @@ import {
 import { NearbyJobCard, ScreenHeaderBtn } from "../../components";
 import { COLORS, icons, SIZES } from "../../constants";
 import styles from "../../styles/search";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const JobSearch = () => {
   const params = useSearchParams();
